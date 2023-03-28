@@ -1,0 +1,47 @@
+﻿<UserControl
+    x:Class="MahappsPrism.Desktop.Views.MyView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    mc:Ignorable="d">
+    <StackPanel
+        Orientation="Vertical">
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="10"
+            Padding="10"
+            Text="Kullanıcı Adı"
+            FontSize="15"
+            Foreground="DarkSeaGreen"
+
+            />
+        <TextBox
+            Margin="10"
+            Padding="10"
+            MinHeight="50"
+            MinWidth="50"
+            />
+        <TextBlock
+            HorizontalAlignment="Left"
+            Margin="10"
+            Padding="10"
+            Text="Şifre"
+            FontSize="15"
+            Foreground="DarkSeaGreen"
+        />
+        <TextBox
+            Margin="10"
+            Padding="10"
+            MinHeight="50"
+            MinWidth="50" />
+        <Button
+            HorizontalAlignment="Right"
+            Margin="10"
+            Padding="10"
+            Content="Giriş yap"
+            Foreground="DarkSeaGreen"
+        />
+
+    </StackPanel>
+</UserControl>

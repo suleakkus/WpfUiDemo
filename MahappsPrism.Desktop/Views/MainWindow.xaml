@@ -1,0 +1,118 @@
+﻿<mah:MetroWindow
+    x:Class="MahappsPrism.Desktop.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:MahappsPrism.Desktop.ViewModels"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:wpf="clr-namespace:MahappsPrism.Desktop.Converters"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:views="clr-namespace:MahappsPrism.Desktop.Views"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
+    Title="{Binding Path=Title}"
+    Height="700"
+    Width="800"
+    ResizeMode="NoResize">
+
+    <Window.Resources>
+        <DataTemplate
+            x:Key="MenuItemTemplate"
+            DataType="{x:Type mah:HamburgerMenuIconItem}">
+            <Grid
+                Height="36">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="48" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ContentControl
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Focusable="False"
+                    Content="{Binding Icon}" />
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Text="{Binding Label}" />
+            </Grid>
+        </DataTemplate>
+        <wpf:SelectedItemToContentConverter
+            x:Key="SelectedItemToContentConverter" />
+    </Window.Resources>
+
+    <mah:HamburgerMenu
+        OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+        ItemsSource="{Binding Path=Items}"
+        ItemTemplate="{StaticResource MenuItemTemplate}">
+        <mah:HamburgerMenu.Content>
+            <MultiBinding
+                Converter="{StaticResource SelectedItemToContentConverter}">
+                <Binding
+                    RelativeSource="{RelativeSource Self}"
+                    Mode="OneWay"
+                    Path="SelectedItem" />
+                <Binding
+                    RelativeSource="{RelativeSource Self}"
+                    Mode="OneWay"
+                    Path="SelectedOptionsItem" />
+            </MultiBinding>
+        </mah:HamburgerMenu.Content>
+        <!-- <mah:HamburgerMenu.ItemsSource> -->
+        <!--     <mah:HamburgerMenuItemCollection> -->
+        <!--         <mah:HamburgerMenuIconItem -->
+        <!--             Label="Menu 1" -->
+        <!--             Icon="{iconPacks:Material Kind=AccountEdit}"> -->
+        <!--             <mah:HamburgerMenuIconItem.Tag> -->
+        <!--                 <StackPanel -->
+        <!--                     Orientation="Horizontal"> -->
+        <!--                     <Button -->
+        <!--                         Content="btn 1" /> -->
+        <!--                     <Button -->
+        <!--                         Content="btn 2" /> -->
+        <!--                     <Button -->
+        <!--                         Content="btn 3" /> -->
+        <!--                     <Button -->
+        <!--                         Content="btn 4" /> -->
+        <!--                     <Button -->
+        <!--                         Content="btn 5" /> -->
+        <!--                     <Button -->
+        <!--                         Content="btn 6" /> -->
+        <!--                 </StackPanel> -->
+        <!--             </mah:HamburgerMenuIconItem.Tag> -->
+        <!--         </mah:HamburgerMenuIconItem> -->
+        <!--         <mah:HamburgerMenuIconItem -->
+        <!--             Label="Menu 2" -->
+        <!--             Icon="{iconPacks:Material Kind=AccountEdit}"> -->
+        <!--             <mah:HamburgerMenuIconItem.Tag> -->
+        <!--                 <views:MyView/> -->
+        <!--             </mah:HamburgerMenuIconItem.Tag> -->
+        <!--         </mah:HamburgerMenuIconItem> -->
+        <!--     </mah:HamburgerMenuItemCollection> -->
+        <!-- </mah:HamburgerMenu.ItemsSource> -->
+
+        <mah:HamburgerMenu.ContentTemplate>
+            <DataTemplate
+                DataType="{x:Type mah:HamburgerMenuImageItem}">
+                <Grid
+                    x:Name="TheContentGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <ContentControl
+                        x:Name="TheContent"
+                        Grid.Row="1"
+                        Focusable="False"
+                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                        Content="{Binding Tag}" />
+                </Grid>
+            </DataTemplate>
+
+        </mah:HamburgerMenu.ContentTemplate>
+    </mah:HamburgerMenu>
+</mah:MetroWindow>
