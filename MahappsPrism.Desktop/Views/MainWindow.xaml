@@ -7,14 +7,11 @@
     xmlns:vm="clr-namespace:MahappsPrism.Desktop.ViewModels"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:wpf="clr-namespace:MahappsPrism.Desktop.Converters"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:views="clr-namespace:MahappsPrism.Desktop.Views"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
     Title="{Binding Path=Title}"
     Height="700"
-    Width="800"
-    ResizeMode="NoResize">
+    Width="800">
 
     <Window.Resources>
         <DataTemplate
