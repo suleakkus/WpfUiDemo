@@ -1,10 +1,14 @@
 ﻿<UserControl
-    x:Class="MahappsPrism.Desktop.Views.MyView"
+    x:Class="Modules.LoginModule.Views.LoginView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    mc:Ignorable="d">
+    xmlns:viewModels="clr-namespace:Modules.LoginModule.ViewModels"
+    xmlns:mvvm="http://prismlibrary.com/"
+    mc:Ignorable="d"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    d:DataContext="{d:DesignInstance viewModels:LoginViewModel}">
     <StackPanel
         Orientation="Vertical">
         <TextBlock
@@ -13,25 +17,23 @@
             Padding="10"
             Text="Kullanıcı Adı"
             FontSize="15"
-            Foreground="DarkSeaGreen"
-
-            />
+            Foreground="DarkSeaGreen" />
         <TextBox
             Margin="10"
             Padding="10"
+            Text="{Binding Path=LoginModel.Username}"
             MinHeight="50"
-            MinWidth="50"
-            />
+            MinWidth="50" />
         <TextBlock
             HorizontalAlignment="Left"
             Margin="10"
             Padding="10"
             Text="Şifre"
             FontSize="15"
-            Foreground="DarkSeaGreen"
-        />
+            Foreground="DarkSeaGreen" />
         <TextBox
             Margin="10"
+            Text="{Binding Path=LoginModel.Password}"
             Padding="10"
             MinHeight="50"
             MinWidth="50" />
@@ -40,8 +42,7 @@
             Margin="10"
             Padding="10"
             Content="Giriş yap"
-            Foreground="DarkSeaGreen"
-        />
-
+            Command="{Binding Path=LoginCommand}"
+            Foreground="DarkSeaGreen" />
     </StackPanel>
 </UserControl>
