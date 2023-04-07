@@ -2,7 +2,6 @@
 using JetBrains.Annotations;
 using Modules.TodoModule.Events;
 using Modules.TodoModule.Models;
-using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -11,9 +10,10 @@ namespace Modules.TodoModule.ViewModels;
 [UsedImplicitly]
 public class DoListViewModel : BindableBase
 {
-    private readonly IEventAggregator ea;
     private readonly TodoList dones;
+    private readonly IEventAggregator ea;
     private readonly TodoList todos;
+    
 
     public DoListViewModel(IEventAggregator ea)
     {
@@ -39,7 +39,7 @@ public class DoListViewModel : BindableBase
             {
                 Text = "Todo 3"
             });
-        
+
         dones.Title = "Done";
         dones.Items.Add(
             new TodoItem(ea)
@@ -69,6 +69,13 @@ public class DoListViewModel : BindableBase
 
     public ObservableCollection<TodoList> TodoLists { get; }
 
+    public void CreateSection(string sectionName)
+    {
+        var todoList = new TodoList(ea);
+        todoList.Title = sectionName;
+        TodoLists.Add(todoList);
+    }
+
     private void OnTodoFinish(TodoItem item)
     {
         todos.Items.Remove(item);
@@ -79,12 +86,5 @@ public class DoListViewModel : BindableBase
     {
         dones.Items.Remove(item);
         todos.Items.Add(item);
-    }
-
-    public void CreateSection(string sectionName)
-    {
-        var todoList = new TodoList(ea);
-        todoList.Title = sectionName;
-        TodoLists.Add(todoList);
     }
 }
