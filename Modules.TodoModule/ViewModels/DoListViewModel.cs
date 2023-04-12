@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using JetBrains.Annotations;
 using Modules.TodoModule.Events;
 using Modules.TodoModule.Models;
-using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -11,8 +11,8 @@ namespace Modules.TodoModule.ViewModels;
 [UsedImplicitly]
 public class DoListViewModel : BindableBase
 {
-    private readonly IEventAggregator ea;
     private readonly TodoList dones;
+    private readonly IEventAggregator ea;
     private readonly TodoList todos;
 
     public DoListViewModel(IEventAggregator ea)
@@ -39,7 +39,7 @@ public class DoListViewModel : BindableBase
             {
                 Text = "Todo 3"
             });
-        
+
         dones.Title = "Done";
         dones.Items.Add(
             new TodoItem(ea)
@@ -65,9 +65,50 @@ public class DoListViewModel : BindableBase
 
         ea.GetEvent<TodoEvents.TodoItemFinishedEvent>().Subscribe(OnTodoFinish);
         ea.GetEvent<TodoEvents.TodoItemUnFinishedEvent>().Subscribe(OnTodoUnFinish);
+
+        dones.Items.CollectionChanged += ItemsOnCollectionChanged;
     }
 
     public ObservableCollection<TodoList> TodoLists { get; }
+
+    public void CreateSection(string sectionName)
+    {
+        var todoList = new TodoList(ea);
+        todoList.Title = sectionName;
+        TodoLists.Add(todoList);
+    }
+
+    private void ItemsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        switch (e.Action)
+        {
+            case NotifyCollectionChangedAction.Add:
+                if (e.NewItems == null)
+                {
+                    break;
+                }
+
+                foreach (TodoItem item in e.NewItems)
+                {
+                    item.IsDone = true;
+                }
+
+                break;
+            case NotifyCollectionChangedAction.Remove:
+
+                if (e.OldItems == null)
+                {
+                    break;
+                }
+
+                foreach (TodoItem item in e.OldItems)
+                {
+                    item.IsDone = false;
+                }
+
+                break;
+        }
+    }
 
     private void OnTodoFinish(TodoItem item)
     {
@@ -79,12 +120,5 @@ public class DoListViewModel : BindableBase
     {
         dones.Items.Remove(item);
         todos.Items.Add(item);
-    }
-
-    public void CreateSection(string sectionName)
-    {
-        var todoList = new TodoList(ea);
-        todoList.Title = sectionName;
-        TodoLists.Add(todoList);
     }
 }

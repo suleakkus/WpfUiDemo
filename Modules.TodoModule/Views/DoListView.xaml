@@ -7,6 +7,7 @@
     xmlns:viewModels="clr-namespace:Modules.TodoModule.ViewModels"
     xmlns:mvvm="http://prismlibrary.com/"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance viewModels:DoListViewModel}">
@@ -14,6 +15,8 @@
         <StackPanel
             Orientation="Horizontal">
             <ItemsControl
+                dd:DragDrop.IsDragSource="True"
+                dd:DragDrop.IsDropTarget="True"
                 ItemsSource="{Binding Path=TodoLists}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -31,6 +34,8 @@
                                 <StackPanel
                                     Orientation="Vertical">
                                     <ListBox
+                                        dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
                                         ItemsSource="{Binding Path=Items}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
