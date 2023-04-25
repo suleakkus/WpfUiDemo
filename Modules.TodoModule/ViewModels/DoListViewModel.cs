@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 using JetBrains.Annotations;
 using Modules.TodoModule.Events;
 using Modules.TodoModule.Models;
@@ -65,6 +66,7 @@ public class DoListViewModel : BindableBase
 
         ea.GetEvent<TodoEvents.TodoItemFinishedEvent>().Subscribe(OnTodoFinish);
         ea.GetEvent<TodoEvents.TodoItemUnFinishedEvent>().Subscribe(OnTodoUnFinish);
+        ea.GetEvent<TodoEvents.TodoItemDeleteEvent>().Subscribe(ToDoDelete);
 
         dones.Items.CollectionChanged += ItemsOnCollectionChanged;
     }
@@ -108,6 +110,24 @@ public class DoListViewModel : BindableBase
 
                 break;
         }
+    }
+
+    private void ToDoDelete(TodoItem item)
+    {
+        foreach (TodoList todoList in TodoLists)
+        {
+            for (int i = 0; i < todoList.Items.Count; i++)
+            {
+                TodoItem? todo = todoList.Items[i];
+                if (todo == item) 
+                {
+                    todoList.Items.Remove(item);
+                    return;
+                }
+            }
+
+        }
+
     }
 
     private void OnTodoFinish(TodoItem item)

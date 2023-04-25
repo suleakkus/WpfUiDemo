@@ -5,9 +5,11 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MahappsPrism.Desktop", "MahappsPrism.Desktop\MahappsPrism.Desktop.csproj", "{CEF555BA-9A94-47AB-89EC-CEB5513B8EDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.LoginModule", "Modules.LoginModule\Modules.LoginModule.csproj", "{671D6FEA-C2A3-48A9-861B-FC4BBB429E4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.LoginModule", "Modules.LoginModule\Modules.LoginModule.csproj", "{671D6FEA-C2A3-48A9-861B-FC4BBB429E4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.TodoModule", "Modules.TodoModule\Modules.TodoModule.csproj", "{9CA4F889-AD74-420D-8119-BD4A2B84B35E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.TodoModule", "Modules.TodoModule\Modules.TodoModule.csproj", "{9CA4F889-AD74-420D-8119-BD4A2B84B35E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandBoxDatabaseConsole", "SandBoxDatabaseConsole\SandBoxDatabaseConsole.csproj", "{E1EFE4BF-150E-4D23-86C3-449DDD531FE2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{9CA4F889-AD74-420D-8119-BD4A2B84B35E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CA4F889-AD74-420D-8119-BD4A2B84B35E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CA4F889-AD74-420D-8119-BD4A2B84B35E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1EFE4BF-150E-4D23-86C3-449DDD531FE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1EFE4BF-150E-4D23-86C3-449DDD531FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1EFE4BF-150E-4D23-86C3-449DDD531FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1EFE4BF-150E-4D23-86C3-449DDD531FE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

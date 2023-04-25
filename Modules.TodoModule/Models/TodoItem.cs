@@ -44,4 +44,11 @@ public class TodoItem : BindableBase
             ea.GetEvent<TodoEvents.TodoItemFinishedEvent>().Publish(this);
         }
     }
+
+    public DelegateCommand? DeleteCommand => new(ToDoDelete);
+
+    private void ToDoDelete()
+    {
+        ea.GetEvent<TodoEvents.TodoItemDeleteEvent>().Publish(this);
+    }
 }
