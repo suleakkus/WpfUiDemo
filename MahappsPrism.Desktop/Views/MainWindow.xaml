@@ -13,6 +13,13 @@
     Height="700"
     Width="800">
 
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button
+                Content="Help" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
     <Window.Resources>
         <DataTemplate
             x:Key="MenuItemTemplate"

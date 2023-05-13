@@ -3,11 +3,8 @@ using DryIoc;
 using JetBrains.Annotations;
 using MahApps.Metro.Controls;
 using MahApps.Metro.IconPacks;
-using MahappsPrism.Desktop.Views;
-using Modules.LoginModule;
 using Modules.LoginModule.ViewModels;
 using Modules.LoginModule.Views;
-using Modules.TodoModule;
 using Modules.TodoModule.Views;
 using Prism.Mvvm;
 
