@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Modules.TodoModule", "Modul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandBoxDatabaseConsole", "SandBoxDatabaseConsole\SandBoxDatabaseConsole.csproj", "{E1EFE4BF-150E-4D23-86C3-449DDD531FE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.DatabaseModule", "Modules.DatabaseModule\Modules.DatabaseModule.csproj", "{50851C8C-AE21-4045-B26A-93C9E98CBD17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E1EFE4BF-150E-4D23-86C3-449DDD531FE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1EFE4BF-150E-4D23-86C3-449DDD531FE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1EFE4BF-150E-4D23-86C3-449DDD531FE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50851C8C-AE21-4045-B26A-93C9E98CBD17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50851C8C-AE21-4045-B26A-93C9E98CBD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50851C8C-AE21-4045-B26A-93C9E98CBD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50851C8C-AE21-4045-B26A-93C9E98CBD17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

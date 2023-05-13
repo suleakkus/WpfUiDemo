@@ -1,2 +1,49 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
+using System.Linq;
+
+namespace SandBoxDatabaseConsole;
+
+public static class Program
+{
+    public static void Main()
+    {
+        using var db = new BloggingContext();
+
+        // Note: This sample requires the database to be created before running.
+        Console.WriteLine($"Database path: {db.DbPath}.");
+
+        // Create
+        Console.WriteLine("Inserting a new blog");
+        db.Add(
+            new Blog
+            {
+                Url = "http://blogs.msdn.com/adonet"
+            });
+        db.SaveChanges();
+
+        // Read
+        Console.WriteLine("Querying for a blog");
+        Blog blog = db.Blogs
+                      .OrderBy(b => b.BlogId)
+                      .First();
+
+        // Update
+        Console.WriteLine("Updating the blog and adding a post");
+        blog.Url = "https://devblogs.microsoft.com/dotnet";
+        for (var i = 0; i < 100; i++)
+        {
+            blog.Posts.Add(
+                new Post
+                {
+                    Title = $"Hello World{i + 1}",
+                    Content = $"I wrote an app using EF Core! {(i + 1)}"
+                });
+        }
+        db.SaveChanges();
+
+        // Delete
+        Console.WriteLine("Delete the blog");
+        //db.Remove(blog);
+        db.SaveChanges();
+    }
+}

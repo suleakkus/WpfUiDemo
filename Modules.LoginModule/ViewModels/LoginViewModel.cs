@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using JetBrains.Annotations;
+using Modules.DatabaseModule;
 using Modules.LoginModule.Models;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -9,10 +10,12 @@ namespace Modules.LoginModule.ViewModels;
 [UsedImplicitly]
 public class LoginViewModel : BindableBase
 {
+    private readonly TodoContext context;
     private LoginModel loginModel;
 
-    public LoginViewModel()
+    public LoginViewModel(TodoContext context)
     {
+        this.context = context;
         loginModel = new LoginModel();
     }
 

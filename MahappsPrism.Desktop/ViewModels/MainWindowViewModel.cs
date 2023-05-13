@@ -1,8 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using DryIoc;
 using JetBrains.Annotations;
 using MahApps.Metro.Controls;
 using MahApps.Metro.IconPacks;
 using MahappsPrism.Desktop.Views;
+using Modules.LoginModule;
+using Modules.LoginModule.ViewModels;
 using Modules.LoginModule.Views;
 using Modules.TodoModule;
 using Modules.TodoModule.Views;
@@ -15,7 +18,7 @@ public class MainWindowViewModel : BindableBase
 {
     private string title;
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(IResolver resolver)
     {
         title = "My Title";
         Items = new ObservableCollection<HamburgerMenuIconItem>();
@@ -24,10 +27,17 @@ public class MainWindowViewModel : BindableBase
         {
             Kind = PackIconMaterialKind.NoteTextOutline
         };
-
         var firstView = new LoginView();
         Items.Add(CreateMenu("Giriş Yap", firstView, icon));
-        Items.Add(CreateMenu("Kayıt Ol", new UserControl1(), icon));
+        Items.Add(
+            CreateMenu(
+                "Kayıt Ol",
+                new SignUpView
+                {
+                    DataContext = resolver.Resolve<SignUpViewModel>()
+                    //DataContext = new SignUpViewModel()
+                },
+                icon));
         Items.Add(CreateMenu("Yapılacaklar", new DoListView(), icon));
         Items.Add(CreateMenu("Menu IV", new LoginView(), icon));
         var secondView = new LoginView();
