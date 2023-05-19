@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
+using Common;
+using Common.Models;
 using JetBrains.Annotations;
 using Modules.DatabaseModule;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Modules.LoginModule.ViewModels;
@@ -11,14 +15,16 @@ namespace Modules.LoginModule.ViewModels;
 public class SignUpViewModel : BindableBase
 {
     private readonly TodoContext context;
+    private readonly IEventAggregator ea;
     private string name;
     private string password;
     private string surname;
     private string username;
 
-    public SignUpViewModel(TodoContext context)
+    public SignUpViewModel(TodoContext context, IEventAggregator ea)
     {
         this.context = context;
+        this.ea = ea;
         name = string.Empty;
         password = string.Empty;
         surname = string.Empty;
@@ -69,6 +75,30 @@ public class SignUpViewModel : BindableBase
             return;
         }
 
+        try
+        {
+            SaveUserToDatabase();
+            NavigateToLogin();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(exception.ToString(), exception.Message, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void NavigateToLogin()
+    {
+        var loginModel = new LoginModel
+        {
+            Username = username,
+            Password = password
+        };
+
+        ea.GetEvent<Events.NavigateToLoginEvent>().Publish(loginModel);
+    }
+
+    private void SaveUserToDatabase()
+    {
         var entity = new User();
         entity.Name = Name;
         entity.Password = Password;

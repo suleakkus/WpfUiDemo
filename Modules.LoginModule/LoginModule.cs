@@ -12,13 +12,13 @@ public class LoginModule : BaseModule
         menuController) { }
 
     public static string LoginRegionName => "LoginRegion";
+    public static string SignupRegionName => "SignUpRegion";
 
-    public override void RegisterTypes(IContainerRegistry containerRegistry)
-    {
-    }
+    public override void RegisterTypes(IContainerRegistry containerRegistry) { }
 
     public override void OnInitialized(IContainerProvider containerProvider)
     {
         RegionManager.RegisterViewWithRegion<LoginView>(LoginRegionName);
+        RegionManager.RegisterViewWithRegion<SignUpView>(SignupRegionName);
     }
 }

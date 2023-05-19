@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
     xmlns:viewModels="clr-namespace:Modules.TodoModule.ViewModels"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance viewModels:DoListViewModel}">
@@ -29,43 +30,54 @@
                         <StackPanel
                             Orientation="Vertical">
                             <GroupBox
+                                Width="320"
+                                mah:HeaderedControlHelper.HeaderFontSize="18"
+                                mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
+                                mah:HeaderedControlHelper.HeaderFontFamily="Segoe UI"
+                                BorderThickness="0"
                                 Margin="4"
                                 Header="{Binding Path=Title}">
                                 <StackPanel
                                     Orientation="Vertical">
-                                    <ListBox
+                                    <ItemsControl
                                         dd:DragDrop.IsDragSource="True"
                                         dd:DragDrop.IsDropTarget="True"
                                         ItemsSource="{Binding Path=Items}">
-                                        <ListBox.ItemTemplate>
+                                        <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border
                                                     CornerRadius="10"
-                                                    BorderBrush="Black"
-                                                    BorderThickness="1"
+                                                    Background="#2F2F2F"
+                                                    BorderThickness="0"
                                                     Margin="4"
-                                                    Padding="30">
+                                                    Padding="10">
                                                     <Grid>
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
-                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition
+                                                                Height="Auto" />
+                                                            <RowDefinition
+                                                                Height="Auto" />
+                                                            <RowDefinition
+                                                                Height="Auto" />
                                                         </Grid.RowDefinitions>
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition
                                                                 Width="Auto" />
                                                             <ColumnDefinition
-                                                                Width="120" />
+                                                                Width="*" />
                                                             <ColumnDefinition
                                                                 Width="Auto" />
                                                         </Grid.ColumnDefinitions>
-                                                        <Button
+                                                        <CheckBox
                                                             Grid.Column="0"
                                                             Grid.Row="0"
-                                                            Content="X"
-                                                            Command="{Binding Path=FinishCommand}" />
+                                                            IsChecked="{Binding Path=IsDone, Mode=OneWay}"
+                                                            Command="{Binding Path=FinishCommand}"
+                                                            Margin="2" />
                                                         <TextBox
+                                                            mah:ControlsHelper.CornerRadius="8"
                                                             TextWrapping="Wrap"
+                                                            Padding="8"
                                                             Grid.Column="1"
                                                             Grid.Row="0"
                                                             Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}" />
@@ -73,20 +85,24 @@
                                                             Grid.Column="2"
                                                             Grid.Row="2"
                                                             HorizontalAlignment="Right"
-                                                            Content="Sil"
-                                                            Margin="5 " 
+                                                            ToolTip="Sil"
+                                                            Margin="5 "
                                                             Padding="5"
-                                                            Command="{Binding Path=DeleteCommand}" />
+                                                            Command="{Binding Path=DeleteCommand}">
+                                                            <iconPacks:PackIconMaterial
+                                                                Kind="TrashCanOutline" />
+                                                        </Button>
                                                     </Grid>
                                                 </Border>
                                             </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                     <Button
-                                        Content="Create Todo"
-                                        Margin="5"
+                                        Content="ToDo Oluştur"
+                                        Margin="16 4"
+                                        mah:ControlsHelper.CornerRadius="8"
                                         Command="{Binding Path=AddItemCommand}"
-                                        Padding="5" />
+                                        Padding="8" />
                                 </StackPanel>
                             </GroupBox>
                         </StackPanel>
@@ -95,11 +111,13 @@
             </ItemsControl>
             <TextBox
                 Width="120"
+                Margin="4"
+                Padding="4"
                 VerticalAlignment="Top"
-                mah:TextBoxHelper.UseFloatingWatermark="True"
                 KeyDown="TextBoxBaseOnTextChanged"
                 mah:TextBoxHelper.ClearTextButton="True"
-                mah:TextBoxHelper.Watermark="Yeni Bölüm Adı:" />
+                mah:TextBoxHelper.UseFloatingWatermark="True"
+                mah:TextBoxHelper.Watermark="Yeni Bölüm Ekle:" />
         </StackPanel>
     </Grid>
 </UserControl>

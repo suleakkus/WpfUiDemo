@@ -22,7 +22,9 @@ public class LoginViewModel : BindableBase
         this.context = context;
         this.ea = ea;
         loginModel = new LoginModel();
+        ea.GetEvent<Events.NavigateToLoginEvent>().Subscribe(OnNavigatedToLogin);
     }
+
 
     public LoginModel LoginModel
     {
@@ -31,6 +33,19 @@ public class LoginViewModel : BindableBase
     }
 
     public DelegateCommand LoginCommand => new(OnLogin);
+
+    public DelegateCommand SignUpCommand => new(OnSignUp);
+
+    private void OnSignUp()
+    {
+        ea.GetEvent<Events.NavigateToSignUpEvent>().Publish();
+    }
+
+    private void OnNavigatedToLogin(LoginModel o)
+    {
+        LoginModel.Username = o.Username;
+        LoginModel.Password = o.Password;
+    }
 
     private void OnLogin()
     {
@@ -56,6 +71,7 @@ public class LoginViewModel : BindableBase
                 "KULLANICI GİRİŞİ",
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
+            return;
         }
 
         ea.GetEvent<Events.LoginEvent>().Publish(LoginModel);
