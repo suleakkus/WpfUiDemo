@@ -1,18 +1,24 @@
-﻿using Prism.Ioc;
-using Prism.Modularity;
+﻿using Common;
+using Modules.LoginModule.Views;
+using Prism.Ioc;
+using Prism.Regions;
 
 namespace Modules.LoginModule;
 
-public class LoginModule : IModule
+public class LoginModule : BaseModule
 {
-    public void RegisterTypes(IContainerRegistry containerRegistry)
+    public LoginModule(IRegionManager regionManager, IMenuController menuController) : base(
+        regionManager,
+        menuController) { }
+
+    public static string LoginRegionName => "LoginRegion";
+
+    public override void RegisterTypes(IContainerRegistry containerRegistry)
     {
-        
     }
 
-
-    public void OnInitialized(IContainerProvider containerProvider)
+    public override void OnInitialized(IContainerProvider containerProvider)
     {
-        
+        RegionManager.RegisterViewWithRegion<LoginView>(LoginRegionName);
     }
 }

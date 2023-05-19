@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandBoxDatabaseConsole", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.DatabaseModule", "Modules.DatabaseModule\Modules.DatabaseModule.csproj", "{50851C8C-AE21-4045-B26A-93C9E98CBD17}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{EC303643-78B4-4084-BA3F-2BE3DCB27951}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{50851C8C-AE21-4045-B26A-93C9E98CBD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50851C8C-AE21-4045-B26A-93C9E98CBD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50851C8C-AE21-4045-B26A-93C9E98CBD17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC303643-78B4-4084-BA3F-2BE3DCB27951}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC303643-78B4-4084-BA3F-2BE3DCB27951}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC303643-78B4-4084-BA3F-2BE3DCB27951}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC303643-78B4-4084-BA3F-2BE3DCB27951}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

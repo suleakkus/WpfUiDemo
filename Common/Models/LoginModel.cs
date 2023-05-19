@@ -1,6 +1,6 @@
 ﻿using Prism.Mvvm;
 
-namespace Modules.LoginModule.Models;
+namespace Common.Models;
 
 public class LoginModel : BindableBase
 {

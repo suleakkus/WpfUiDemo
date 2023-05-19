@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Windows;
+using Common;
+using Common.Models;
 using JetBrains.Annotations;
 using Modules.DatabaseModule;
-using Modules.LoginModule.Models;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace Modules.LoginModule.ViewModels;
@@ -12,11 +14,13 @@ namespace Modules.LoginModule.ViewModels;
 public class LoginViewModel : BindableBase
 {
     private readonly TodoContext context;
+    private readonly IEventAggregator ea;
     private LoginModel loginModel;
 
-    public LoginViewModel(TodoContext context)
+    public LoginViewModel(TodoContext context, IEventAggregator ea)
     {
         this.context = context;
+        this.ea = ea;
         loginModel = new LoginModel();
     }
 
@@ -54,6 +58,6 @@ public class LoginViewModel : BindableBase
                 MessageBoxImage.Error);
         }
 
-        //TODO buradan TODO ekranına yönlendir.
+        ea.GetEvent<Events.LoginEvent>().Publish(LoginModel);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
 using JetBrains.Annotations;
 using Modules.TodoModule.Events;
 using Modules.TodoModule.Models;
@@ -116,18 +115,16 @@ public class DoListViewModel : BindableBase
     {
         foreach (TodoList todoList in TodoLists)
         {
-            for (int i = 0; i < todoList.Items.Count; i++)
+            for (var i = 0; i < todoList.Items.Count; i++)
             {
                 TodoItem? todo = todoList.Items[i];
-                if (todo == item) 
+                if (todo == item)
                 {
                     todoList.Items.Remove(item);
                     return;
                 }
             }
-
         }
-
     }
 
     private void OnTodoFinish(TodoItem item)

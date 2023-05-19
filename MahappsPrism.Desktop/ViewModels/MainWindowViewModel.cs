@@ -1,11 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using DryIoc;
+using Common;
+using Common.Models;
 using JetBrains.Annotations;
 using MahApps.Metro.Controls;
-using MahApps.Metro.IconPacks;
-using Modules.LoginModule.ViewModels;
-using Modules.LoginModule.Views;
-using Modules.TodoModule.Views;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace MahappsPrism.Desktop.ViewModels;
@@ -13,32 +11,22 @@ namespace MahappsPrism.Desktop.ViewModels;
 [UsedImplicitly]
 public class MainWindowViewModel : BindableBase
 {
+    private readonly IMenuController menuController;
+
+    private bool isFlyoutOpen;
+
+    private LoginModel loginModel;
     private string title;
 
-    public MainWindowViewModel(IResolver resolver)
+    public MainWindowViewModel(
+        IMenuController menuController,
+        IEventAggregator ea)
     {
+        this.menuController = menuController;
         title = "My Title";
         Items = new ObservableCollection<HamburgerMenuIconItem>();
-
-        PackIconControlBase icon = new PackIconMaterial
-        {
-            Kind = PackIconMaterialKind.NoteTextOutline
-        };
-        var firstView = new LoginView();
-        Items.Add(CreateMenu("Giriş Yap", firstView, icon));
-        Items.Add(
-            CreateMenu(
-                "Kayıt Ol",
-                new SignUpView
-                {
-                    DataContext = resolver.Resolve<SignUpViewModel>()
-                    //DataContext = new SignUpViewModel()
-                },
-                icon));
-        Items.Add(CreateMenu("Yapılacaklar", new DoListView(), icon));
-        Items.Add(CreateMenu("Menu IV", new LoginView(), icon));
-        var secondView = new LoginView();
-        Items.Add(CreateMenu("Menu X", secondView, icon));
+        ea.GetEvent<Events.LoginEvent>().Subscribe(OnLogin);
+        isFlyoutOpen = true;
     }
 
     public string Title
@@ -49,12 +37,29 @@ public class MainWindowViewModel : BindableBase
 
     public ObservableCollection<HamburgerMenuIconItem> Items { get; set; }
 
-    private static HamburgerMenuIconItem CreateMenu(string label, object view, PackIconControlBase icon)
+    public bool IsFlyoutOpen
     {
-        var menuOne = new HamburgerMenuIconItem();
-        menuOne.Icon = icon;
-        menuOne.Label = label;
-        menuOne.Tag = view;
-        return menuOne;
+        get => isFlyoutOpen;
+        set => SetProperty(ref isFlyoutOpen, value);
+    }
+
+    public LoginModel LoginModel
+    {
+        get => loginModel;
+        set => SetProperty(ref loginModel, value);
+    }
+
+    public void Start()
+    {
+        foreach (HamburgerMenuIconItem item in menuController.Items)
+        {
+            Items.Add(item);
+        }
+    }
+
+    private void OnLogin(LoginModel o)
+    {
+        LoginModel = o;
+        IsFlyoutOpen = false;
     }
 }

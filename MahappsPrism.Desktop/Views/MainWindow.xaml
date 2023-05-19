@@ -7,16 +7,35 @@
     xmlns:vm="clr-namespace:MahappsPrism.Desktop.ViewModels"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:wpf="clr-namespace:MahappsPrism.Desktop.Converters"
+    xmlns:regions="http://prismlibrary.com/"
+    xmlns:loginModule="clr-namespace:Modules.LoginModule;assembly=Modules.LoginModule"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
     Title="{Binding Path=Title}"
     Height="700"
+    x:Name="Window"
     Width="800">
 
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <Button
-                Content="Help" />
+
+            <StackPanel
+                Orientation="Horizontal"
+                VerticalAlignment="Center">
+                <iconPacks:PackIconFontAwesome
+                    Width="15"
+                    Height="15"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Kind="UserMdSolid" />
+                <Label
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding Path=LoginModel.Username}" />
+            </StackPanel>
+
+
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
 
@@ -49,8 +68,14 @@
     </Window.Resources>
 
     <mah:HamburgerMenu
+        PaneBackground="#030303"
+        OpenPaneLength="180"
+        SelectedIndex="0"
+        IsPaneOpen="True"
+        CompactPaneLength="48"
         OptionsItemTemplate="{StaticResource MenuItemTemplate}"
         ItemsSource="{Binding Path=Items}"
+        DisplayMode="CompactInline"
         ItemTemplate="{StaticResource MenuItemTemplate}">
         <mah:HamburgerMenu.Content>
             <MultiBinding
@@ -65,38 +90,6 @@
                     Path="SelectedOptionsItem" />
             </MultiBinding>
         </mah:HamburgerMenu.Content>
-        <!-- <mah:HamburgerMenu.ItemsSource> -->
-        <!--     <mah:HamburgerMenuItemCollection> -->
-        <!--         <mah:HamburgerMenuIconItem -->
-        <!--             Label="Menu 1" -->
-        <!--             Icon="{iconPacks:Material Kind=AccountEdit}"> -->
-        <!--             <mah:HamburgerMenuIconItem.Tag> -->
-        <!--                 <StackPanel -->
-        <!--                     Orientation="Horizontal"> -->
-        <!--                     <Button -->
-        <!--                         Content="btn 1" /> -->
-        <!--                     <Button -->
-        <!--                         Content="btn 2" /> -->
-        <!--                     <Button -->
-        <!--                         Content="btn 3" /> -->
-        <!--                     <Button -->
-        <!--                         Content="btn 4" /> -->
-        <!--                     <Button -->
-        <!--                         Content="btn 5" /> -->
-        <!--                     <Button -->
-        <!--                         Content="btn 6" /> -->
-        <!--                 </StackPanel> -->
-        <!--             </mah:HamburgerMenuIconItem.Tag> -->
-        <!--         </mah:HamburgerMenuIconItem> -->
-        <!--         <mah:HamburgerMenuIconItem -->
-        <!--             Label="Menu 2" -->
-        <!--             Icon="{iconPacks:Material Kind=AccountEdit}"> -->
-        <!--             <mah:HamburgerMenuIconItem.Tag> -->
-        <!--                 <views:MyView/> -->
-        <!--             </mah:HamburgerMenuIconItem.Tag> -->
-        <!--         </mah:HamburgerMenuIconItem> -->
-        <!--     </mah:HamburgerMenuItemCollection> -->
-        <!-- </mah:HamburgerMenu.ItemsSource> -->
 
         <mah:HamburgerMenu.ContentTemplate>
             <DataTemplate
@@ -119,4 +112,19 @@
 
         </mah:HamburgerMenu.ContentTemplate>
     </mah:HamburgerMenu>
+
+    <mah:MetroWindow.Flyouts>
+        <mah:FlyoutsControl>
+            <mah:Flyout
+                IsOpen="{Binding Path=IsFlyoutOpen}"
+                Header="Login"
+                CloseButtonVisibility="Hidden"
+                Position="Right"
+                Width="{Binding Path=ActualWidth, ElementName=Window}">
+                <ContentControl
+                    regions:RegionManager.RegionName="{x:Static loginModule:LoginModule.LoginRegionName}" />
+            </mah:Flyout>
+
+        </mah:FlyoutsControl>
+    </mah:MetroWindow.Flyouts>
 </mah:MetroWindow>
