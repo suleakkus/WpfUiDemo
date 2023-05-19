@@ -13,13 +13,12 @@
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
     Title="{Binding Path=Title}"
-    Height="700"
-    x:Name="Window"
-    Width="800">
+    Height="400"
+    Width="400"
+    x:Name="Window">
 
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-
             <StackPanel
                 Orientation="Horizontal"
                 VerticalAlignment="Center">
@@ -34,8 +33,6 @@
                     VerticalAlignment="Center"
                     Content="{Binding Path=LoginModel.Username}" />
             </StackPanel>
-
-
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
 
@@ -124,7 +121,7 @@
                 <ContentControl
                     regions:RegionManager.RegionName="{x:Static loginModule:LoginModule.LoginRegionName}" />
             </mah:Flyout>
-            
+
             <mah:Flyout
                 IsOpen="{Binding Path=IsSignUpFlyoutOpen}"
                 Header="Kullanıcı Kayıt"

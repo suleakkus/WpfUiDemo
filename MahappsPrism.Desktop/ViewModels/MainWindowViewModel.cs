@@ -1,8 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Common;
 using Common.Models;
 using JetBrains.Annotations;
 using MahApps.Metro.Controls;
+using Modules.DatabaseModule;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -12,7 +15,7 @@ namespace MahappsPrism.Desktop.ViewModels;
 public class MainWindowViewModel : BindableBase
 {
     private readonly IMenuController menuController;
-
+    private readonly TodoContext context;
     private bool isLoginFlyoutOpen;
     private bool isSignUpFlyoutOpen;
     private LoginModel loginModel;
@@ -20,9 +23,11 @@ public class MainWindowViewModel : BindableBase
 
     public MainWindowViewModel(
         IMenuController menuController,
-        IEventAggregator ea)
+        IEventAggregator ea,
+        TodoContext context)
     {
         this.menuController = menuController;
+        this.context = context;
         title = "My Title";
         Items = new ObservableCollection<HamburgerMenuIconItem>();
         isLoginFlyoutOpen = true;
@@ -64,6 +69,12 @@ public class MainWindowViewModel : BindableBase
         {
             Items.Add(item);
         }
+        
+        //Kullanıcıları bir kereliğine çekiyoruz ki database bağlantısını oluşturup
+        //kayıt ol ekranında bekleme yapmasın
+        //uygulamayı aslında daha hızlı yapmıyor
+        //sadece kayıt ol ekranında beklemek yerine burada bekliyor ilk seferinde
+        List<User> users = context.Users.ToList();
     }
 
     private void OnLogin(LoginModel o)
