@@ -116,13 +116,23 @@
     <mah:MetroWindow.Flyouts>
         <mah:FlyoutsControl>
             <mah:Flyout
-                IsOpen="{Binding Path=IsFlyoutOpen}"
-                Header="Login"
+                IsOpen="{Binding Path=IsLoginFlyoutOpen}"
+                Header="Kullanıcı Girişi"
                 CloseButtonVisibility="Hidden"
                 Position="Right"
                 Width="{Binding Path=ActualWidth, ElementName=Window}">
                 <ContentControl
                     regions:RegionManager.RegionName="{x:Static loginModule:LoginModule.LoginRegionName}" />
+            </mah:Flyout>
+            
+            <mah:Flyout
+                IsOpen="{Binding Path=IsSignUpFlyoutOpen}"
+                Header="Kullanıcı Kayıt"
+                CloseButtonVisibility="Hidden"
+                Position="Right"
+                Width="{Binding Path=ActualWidth, ElementName=Window}">
+                <ContentControl
+                    regions:RegionManager.RegionName="{x:Static loginModule:LoginModule.SignupRegionName}" />
             </mah:Flyout>
 
         </mah:FlyoutsControl>

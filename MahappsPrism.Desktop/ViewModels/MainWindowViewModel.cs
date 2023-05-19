@@ -13,8 +13,8 @@ public class MainWindowViewModel : BindableBase
 {
     private readonly IMenuController menuController;
 
-    private bool isFlyoutOpen;
-
+    private bool isLoginFlyoutOpen;
+    private bool isSignUpFlyoutOpen;
     private LoginModel loginModel;
     private string title;
 
@@ -25,8 +25,11 @@ public class MainWindowViewModel : BindableBase
         this.menuController = menuController;
         title = "My Title";
         Items = new ObservableCollection<HamburgerMenuIconItem>();
+        isLoginFlyoutOpen = true;
+        loginModel = new LoginModel();
         ea.GetEvent<Events.LoginEvent>().Subscribe(OnLogin);
-        isFlyoutOpen = true;
+        ea.GetEvent<Events.NavigateToSignUpEvent>().Subscribe(NavigateToSignUp);
+        ea.GetEvent<Events.NavigateToLoginEvent>().Subscribe(NavigateToLogin);
     }
 
     public string Title
@@ -37,10 +40,16 @@ public class MainWindowViewModel : BindableBase
 
     public ObservableCollection<HamburgerMenuIconItem> Items { get; set; }
 
-    public bool IsFlyoutOpen
+    public bool IsLoginFlyoutOpen
     {
-        get => isFlyoutOpen;
-        set => SetProperty(ref isFlyoutOpen, value);
+        get => isLoginFlyoutOpen;
+        set => SetProperty(ref isLoginFlyoutOpen, value);
+    }
+
+    public bool IsSignUpFlyoutOpen
+    {
+        get => isSignUpFlyoutOpen;
+        set => SetProperty(ref isSignUpFlyoutOpen, value);
     }
 
     public LoginModel LoginModel
@@ -60,6 +69,18 @@ public class MainWindowViewModel : BindableBase
     private void OnLogin(LoginModel o)
     {
         LoginModel = o;
-        IsFlyoutOpen = false;
+        IsLoginFlyoutOpen = false;
+    }
+
+    private void NavigateToLogin(LoginModel o)
+    {
+        IsLoginFlyoutOpen = true;
+        IsSignUpFlyoutOpen = false;
+    }
+
+    private void NavigateToSignUp()
+    {
+        IsLoginFlyoutOpen = false;
+        IsSignUpFlyoutOpen = true;
     }
 }
