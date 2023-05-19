@@ -5,70 +5,46 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:viewModels="clr-namespace:Modules.LoginModule.ViewModels"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance viewModels:SignUpViewModel}">
     <Grid>
         <StackPanel
             VerticalAlignment="Center">
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="10"
-                Padding="10"
-                Text="Ad"
-                FontSize="15"
-                Foreground="DarkSeaGreen" />
             <TextBox
                 Margin="10"
                 Padding="10"
-                MinHeight="50"
-                Text="{Binding Name}"
-                MinWidth="50" />
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="10"
-                Padding="10"
-                Text="Soyad"
-                FontSize="15"
-                Foreground="DarkSeaGreen" />
+                mah:TextBoxHelper.UseFloatingWatermark="True"
+                mah:TextBoxHelper.Watermark="Ad"
+                Text="{Binding Name}" />
+
             <TextBox
                 Margin="10"
                 Padding="10"
-                MinHeight="50"
-                Text="{Binding Surname}"
-                MinWidth="50" />
-            <TextBlock
-                HorizontalAlignment="Left"
-                Margin="10"
-                Padding="10"
-                Text="Kullanıcı Adı"
-                FontSize="15"
-                Foreground="DarkSeaGreen" />
+                mah:TextBoxHelper.UseFloatingWatermark="True"
+                mah:TextBoxHelper.Watermark="Soyad"
+                Text="{Binding Surname}" />
+
             <TextBox
                 Text="{Binding Username}"
                 Margin="10"
                 Padding="10"
-                MinHeight="50"
-                MinWidth="50" />
-            <TextBlock
-                HorizontalAlignment="Left"
+                mah:TextBoxHelper.UseFloatingWatermark="True"
+                mah:TextBoxHelper.Watermark="Kullanıcı Adı" />
+
+            <PasswordBox
                 Margin="10"
                 Padding="10"
-                Text="Şifre"
-                FontSize="15"
-                Foreground="DarkSeaGreen" />
-            <TextBox
-                Text="{Binding Password}"
-                Margin="10"
-                Padding="10"
-                MinHeight="50"
-                MinWidth="50" />
+                mah:PasswordBoxBindingBehavior.Password="{Binding Path=Password}"
+                mah:TextBoxHelper.UseFloatingWatermark="True"
+                mah:TextBoxHelper.Watermark="Parola" />
             <Button
                 HorizontalAlignment="Right"
                 Margin="10"
+                IsDefault="True"
                 Padding="10"
                 Content="Üye Ol"
-                Command="{Binding SignUpCommand}"
-                Foreground="DarkSeaGreen" />
+                Command="{Binding SignUpCommand}" />
         </StackPanel>
     </Grid>
 </UserControl>

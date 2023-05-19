@@ -6,37 +6,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:viewModels="clr-namespace:Modules.LoginModule.ViewModels"
     xmlns:mvvm="http://prismlibrary.com/"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance viewModels:LoginViewModel}">
     <StackPanel
         Orientation="Vertical">
-        <TextBlock
-            HorizontalAlignment="Left"
-            Margin="10"
-            Padding="10"
-            Text="Kullanıcı Adı"
-            FontSize="15"
-            Foreground="DarkSeaGreen" />
         <TextBox
             Margin="10"
             Padding="10"
-            Text="{Binding Path=LoginModel.Username}"
-            MinHeight="50"
-            MinWidth="50" />
-        <TextBlock
-            HorizontalAlignment="Left"
+            mah:TextBoxHelper.UseFloatingWatermark="True"
+            mah:TextBoxHelper.Watermark="Kullanıcı Adı"
+            Text="{Binding Path=LoginModel.Username}" />
+        <PasswordBox
             Margin="10"
-            Padding="10"
-            Text="Şifre"
-            FontSize="15"
-            Foreground="DarkSeaGreen" />
-        <TextBox
-            Margin="10"
-            Text="{Binding Path=LoginModel.Password}"
-            Padding="10"
-            MinHeight="50"
-            MinWidth="50" />
+            mah:PasswordBoxBindingBehavior.Password="{Binding Path=LoginModel.Password}"
+            mah:TextBoxHelper.UseFloatingWatermark="True"
+            mah:TextBoxHelper.Watermark="Parola"
+            Padding="10" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition
@@ -53,17 +40,17 @@
                 Margin="10"
                 Padding="10"
                 Content="Kayıt Ol"
-                Command="{Binding Path=SignUpCommand}"
-                Foreground="DarkSeaGreen" />
+                Command="{Binding Path=SignUpCommand}" />
 
             <Button
                 Grid.Column="2"
                 HorizontalAlignment="Right"
+                IsDefault="True"
                 Margin="10"
                 Padding="10"
+                Width="100"
                 Content="Giriş Yap"
-                Command="{Binding Path=LoginCommand}"
-                Foreground="DarkSeaGreen" />
+                Command="{Binding Path=LoginCommand}" />
         </Grid>
     </StackPanel>
 </UserControl>
