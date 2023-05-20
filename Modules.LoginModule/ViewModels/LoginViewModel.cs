@@ -4,6 +4,7 @@ using Common;
 using Common.Models;
 using JetBrains.Annotations;
 using Modules.DatabaseModule;
+using Modules.DatabaseModule.Tables;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
