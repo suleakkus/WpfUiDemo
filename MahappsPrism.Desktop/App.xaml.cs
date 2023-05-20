@@ -14,7 +14,10 @@ public partial class App
 {
     protected override void RegisterTypes(IContainerRegistry registry)
     {
-        registry.RegisterSingleton<TodoContext>();
+        var todoContext = new TodoContext();
+        todoContext.Database.EnsureCreated();
+        registry.RegisterInstance(todoContext);
+
         registry.RegisterSingleton<IMenuController, MenuController>();
     }
 
