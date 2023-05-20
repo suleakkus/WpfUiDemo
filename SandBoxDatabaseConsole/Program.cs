@@ -22,7 +22,6 @@ public static class Program
                 TodoList = context.Lists.First()
             });
         context.SaveChanges();
-        
     }
 
     private static void AddMilkaAndList(TodoContext context)

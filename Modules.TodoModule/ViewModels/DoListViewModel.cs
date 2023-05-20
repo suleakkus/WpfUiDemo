@@ -1,6 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
+using Common.Models;
 using JetBrains.Annotations;
+using Modules.DatabaseModule;
+using Modules.DatabaseModule.Tables;
 using Modules.TodoModule.Events;
 using Modules.TodoModule.Models;
 using Prism.Events;
@@ -11,72 +16,68 @@ namespace Modules.TodoModule.ViewModels;
 [UsedImplicitly]
 public class DoListViewModel : BindableBase
 {
-    private readonly TodoList dones;
+    private readonly TodoContext context;
     private readonly IEventAggregator ea;
-    private readonly TodoList todos;
+    private LoginModel? loginUser;
 
-    public DoListViewModel(IEventAggregator ea)
+    public DoListViewModel(IEventAggregator ea, TodoContext context)
     {
         this.ea = ea;
-        dones = new TodoList(ea);
-        todos = new TodoList(ea);
+        this.context = context;
+        // ea.GetEvent<TodoEvents.TodoItemFinishedEvent>().Subscribe(OnTodoFinish);
+        // ea.GetEvent<TodoEvents.TodoItemUnFinishedEvent>().Subscribe(OnTodoUnFinish);
+        ea.GetEvent<TodoEvents.TodoItemDeleteEvent>().Subscribe(OnToDoDelete);
 
-        TodoLists = new ObservableCollection<TodoList>();
+        ea.GetEvent<Common.Events.LoginEvent>().Subscribe(OnUserLogin);
 
-        todos.Title = "Todo's";
-        todos.Items.Add(
-            new TodoItem(ea)
-            {
-                Text = "Todo 1"
-            });
-        todos.Items.Add(
-            new TodoItem(ea)
-            {
-                Text = "Todo 2"
-            });
-        todos.Items.Add(
-            new TodoItem(ea)
-            {
-                Text = "Todo 3"
-            });
-
-        dones.Title = "Done";
-        dones.Items.Add(
-            new TodoItem(ea)
-            {
-                Text = "Done 1",
-                IsDone = true
-            });
-        dones.Items.Add(
-            new TodoItem(ea)
-            {
-                Text = "Done 2",
-                IsDone = true
-            });
-        dones.Items.Add(
-            new TodoItem(ea)
-            {
-                Text = "Done 3",
-                IsDone = true
-            });
-
-        TodoLists.Add(todos);
-        TodoLists.Add(dones);
-
-        ea.GetEvent<TodoEvents.TodoItemFinishedEvent>().Subscribe(OnTodoFinish);
-        ea.GetEvent<TodoEvents.TodoItemUnFinishedEvent>().Subscribe(OnTodoUnFinish);
-        ea.GetEvent<TodoEvents.TodoItemDeleteEvent>().Subscribe(ToDoDelete);
-
-        dones.Items.CollectionChanged += ItemsOnCollectionChanged;
+        //dones.Items.CollectionChanged += ItemsOnCollectionChanged;
     }
 
-    public ObservableCollection<TodoList> TodoLists { get; }
+    public ObservableCollection<TodoListBindable> TodoLists { get; } = new();
 
     public void CreateSection(string sectionName)
     {
-        var todoList = new TodoList(ea);
+        var todoList = new TodoListBindable(ea);
         todoList.Title = sectionName;
         TodoLists.Add(todoList);
+    }
+
+    private void OnToDoDelete(TodoItemBindable value)
+    {
+        Todo todo = context.Todos.First(o => o.Equals(value.Entity));
+
+        context.Todos.Remove(todo);
+        foreach (TodoListBindable list in TodoLists)
+        {
+            list.Items.Remove(value);
+        }
+
+        context.SaveChanges();
+    }
+
+    private void OnUserLogin(LoginModel model)
+    {
+        loginUser = model;
+        TodoLists.Clear();
+        foreach (TodoList list in context.Lists.Where(o => o.User.Username == loginUser.Username))
+        {
+            var todoList = new TodoListBindable(ea)
+            {
+                Title = list.Name
+            };
+
+            foreach (Todo todo in context.Todos.Where(o => o.TodoList.TodoListId == list.TodoListId))
+            {
+                todoList.Items.Add(
+                    new TodoItemBindable(ea, todo)
+                    {
+                        Text = todo.Name,
+                        IsDone = todo.IsDone
+                    });
+            }
+
+            TodoLists.Add(todoList);
+        }
     }
 
     private void ItemsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -89,7 +90,7 @@ public class DoListViewModel : BindableBase
                     break;
                 }
 
-                foreach (TodoItem item in e.NewItems)
+                foreach (TodoItemBindable item in e.NewItems)
                 {
                     item.IsDone = true;
                 }
@@ -102,40 +103,20 @@ public class DoListViewModel : BindableBase
                     break;
                 }
 
-                foreach (TodoItem item in e.OldItems)
+                foreach (TodoItemBindable item in e.OldItems)
                 {
                     item.IsDone = false;
                 }
 
                 break;
+            case NotifyCollectionChangedAction.Replace:
+                break;
+            case NotifyCollectionChangedAction.Move:
+                break;
+            case NotifyCollectionChangedAction.Reset:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
-    }
-
-    private void ToDoDelete(TodoItem item)
-    {
-        foreach (TodoList todoList in TodoLists)
-        {
-            for (var i = 0; i < todoList.Items.Count; i++)
-            {
-                TodoItem? todo = todoList.Items[i];
-                if (todo == item)
-                {
-                    todoList.Items.Remove(item);
-                    return;
-                }
-            }
-        }
-    }
-
-    private void OnTodoFinish(TodoItem item)
-    {
-        todos.Items.Remove(item);
-        dones.Items.Add(item);
-    }
-
-    private void OnTodoUnFinish(TodoItem item)
-    {
-        dones.Items.Remove(item);
-        todos.Items.Add(item);
     }
 }
