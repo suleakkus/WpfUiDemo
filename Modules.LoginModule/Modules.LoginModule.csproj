@@ -13,4 +13,17 @@
       <PackageReference Include="Prism.Core" Version="8.1.97" />
       <PackageReference Include="Prism.Wpf" Version="8.1.97" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Common\Common.csproj" />
+      <ProjectReference Include="..\Modules.DatabaseModule\Modules.DatabaseModule.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Update="Views\SignUpView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
 </Project>
