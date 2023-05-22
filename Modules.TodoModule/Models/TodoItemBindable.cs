@@ -1,19 +1,21 @@
-﻿using Modules.TodoModule.Events;
+﻿using Modules.DatabaseModule.Tables;
+using Modules.TodoModule.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
 
 namespace Modules.TodoModule.Models;
 
-public class TodoItem : BindableBase
+public class TodoItemBindable : BindableBase
 {
     private readonly IEventAggregator ea;
     private bool isDone;
     private string text;
 
-    public TodoItem(IEventAggregator ea)
+    public TodoItemBindable(IEventAggregator ea, Todo todo)
     {
         this.ea = ea;
+        Entity = todo;
         text = string.Empty;
     }
 
@@ -31,6 +33,10 @@ public class TodoItem : BindableBase
 
     public DelegateCommand FinishCommand => new(OnFinish);
 
+    public DelegateCommand DeleteCommand => new(ToDoDelete);
+
+    public Todo Entity { get; }
+
     private void OnFinish()
     {
         if (IsDone)
@@ -44,8 +50,6 @@ public class TodoItem : BindableBase
             ea.GetEvent<TodoEvents.TodoItemFinishedEvent>().Publish(this);
         }
     }
-
-    public DelegateCommand? DeleteCommand => new(ToDoDelete);
 
     private void ToDoDelete()
     {

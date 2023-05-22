@@ -5,16 +5,16 @@ using Prism.Mvvm;
 
 namespace Modules.TodoModule.Models;
 
-public class TodoList : BindableBase
+public class TodoListBindable : BindableBase
 {
     private readonly IEventAggregator ea;
     private string title;
 
-    public TodoList(IEventAggregator ea)
+    public TodoListBindable(IEventAggregator ea)
     {
         this.ea = ea;
         title = string.Empty;
-        Items = new ObservableCollection<TodoItem>();
+        Items = new ObservableCollection<TodoItemBindable>();
     }
 
     public string Title
@@ -23,12 +23,13 @@ public class TodoList : BindableBase
         set => SetProperty(ref title, value);
     }
 
-    public ObservableCollection<TodoItem> Items { get; }
+    public ObservableCollection<TodoItemBindable> Items { get; }
 
     public DelegateCommand AddItemCommand => new(OnAddItem);
 
     private void OnAddItem()
     {
-        Items.Add(new TodoItem(ea));
+        //TODO 
+        //Items.Add(new TodoItem(ea));
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Modules.DatabaseModule;
+﻿namespace Modules.DatabaseModule.Tables;
 
-public class User
+public class User : BaseEntity
 {
     public int UserId { get; set; }
     public string? Username { get; set; }

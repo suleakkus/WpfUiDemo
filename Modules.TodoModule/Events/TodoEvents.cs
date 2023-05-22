@@ -5,8 +5,8 @@ namespace Modules.TodoModule.Events;
 
 public static class TodoEvents
 {
-    public class TodoItemFinishedEvent : PubSubEvent<TodoItem> { }
-    public class TodoItemUnFinishedEvent : PubSubEvent<TodoItem> { }
+    public class TodoItemFinishedEvent : PubSubEvent<TodoItemBindable> { }
+    public class TodoItemUnFinishedEvent : PubSubEvent<TodoItemBindable> { }
 
-    public class TodoItemDeleteEvent:PubSubEvent<TodoItem>{}
+    public class TodoItemDeleteEvent:PubSubEvent<TodoItemBindable>{}
 }

@@ -6,6 +6,7 @@ using Common.Models;
 using JetBrains.Annotations;
 using MahApps.Metro.Controls;
 using Modules.DatabaseModule;
+using Modules.DatabaseModule.Tables;
 using Prism.Events;
 using Prism.Mvvm;
 
