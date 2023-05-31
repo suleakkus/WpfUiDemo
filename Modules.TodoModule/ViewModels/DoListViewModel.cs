@@ -40,22 +40,17 @@ public class DoListViewModel : BindableBase
         context.Lists.Add(list);
         context.SaveChanges();
 
-        var todoList = new TodoListBindable(ea, list);
+        var todoList = new TodoListBindable(ea, list, context);
         todoList.Title = sectionName;
         TodoLists.Add(todoList);
     }
 
     private void OnToDoDelete(TodoItemBindable value)
     {
-        Todo todo = context.Todos.First(o => o.Equals(value.Entity));
-
-        context.Todos.Remove(todo);
         foreach (TodoListBindable list in TodoLists)
         {
             list.Items.Remove(value);
         }
-
-        context.SaveChanges();
     }
 
     private void OnUserLogin(LoginModel model)
@@ -64,10 +59,10 @@ public class DoListViewModel : BindableBase
         TodoLists.Clear();
 
         List<TodoList> currentUsersLists = GetCurrentUserLists();
-        User currentUser = GetCurrentUser();
+
         foreach (TodoList list in currentUsersLists)
         {
-            var todoList = new TodoListBindable(ea, list)
+            var todoList = new TodoListBindable(ea, list, context)
             {
                 Title = list.Name
             };
@@ -75,7 +70,7 @@ public class DoListViewModel : BindableBase
             foreach (Todo todo in context.Todos.Where(o => o.TodoList.TodoListId == list.TodoListId))
             {
                 todoList.Items.Add(
-                    new TodoItemBindable(ea, todo)
+                    new TodoItemBindable(ea, todo, context)
                     {
                         Text = todo.Name,
                         IsDone = todo.IsDone
