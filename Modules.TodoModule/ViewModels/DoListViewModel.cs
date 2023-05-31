@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using Common.Models;
 using JetBrains.Annotations;
@@ -27,6 +28,20 @@ public class DoListViewModel : BindableBase
         this.context = context;
         ea.GetEvent<TodoEvents.TodoItemDeleteEvent>().Subscribe(OnToDoDelete);
         ea.GetEvent<Common.Events.LoginEvent>().Subscribe(OnUserLogin);
+        TodoLists.CollectionChanged += TodoListsOnCollectionChanged;
+    }
+
+    private void TodoListsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Move)
+        {
+            for (var i = 0; i < TodoLists.Count; i++)
+            {
+                TodoListBindable item = TodoLists[i];
+                item.TodoList.Order = i;
+            }
+            context.SaveChanges();
+        }
     }
 
     public ObservableCollection<TodoListBindable> TodoLists { get; } = new();
@@ -62,20 +77,22 @@ public class DoListViewModel : BindableBase
 
         foreach (TodoList list in currentUsersLists)
         {
-            var todoList = new TodoListBindable(ea, list, context)
-            {
-                Title = list.Name
-            };
+            var todos = new List<TodoItemBindable>();
 
             foreach (Todo todo in context.Todos.Where(o => o.TodoList.TodoListId == list.TodoListId))
             {
-                todoList.Items.Add(
-                    new TodoItemBindable(ea, todo, context)
-                    {
-                        Text = todo.Name,
-                        IsDone = todo.IsDone
-                    });
+                var bindable = new TodoItemBindable(ea, todo, context)
+                {
+                    Text = todo.Name,
+                    IsDone = todo.IsDone
+                };
+                todos.Add(bindable);
             }
+
+            var todoList = new TodoListBindable(ea, list, context, todos)
+            {
+                Title = list.Name
+            };
 
             TodoLists.Add(todoList);
         }
@@ -87,19 +104,11 @@ public class DoListViewModel : BindableBase
                                    .Lists
                                    .Where(o => o.User.Username == loginUser.Username)
                                    .ToList();
-        todoLists.Sort(TodoListOrderComparison);
+        todoLists.Sort(TodoList.OrderComparison);
         return todoLists;
     }
 
-    private static int TodoListOrderComparison(TodoList x, TodoList y)
-    {
-        if (x.Order < y.Order)
-        {
-            return x.Order;
-        }
-
-        return y.Order;
-    }
+    
 
     private User GetCurrentUser()
     {

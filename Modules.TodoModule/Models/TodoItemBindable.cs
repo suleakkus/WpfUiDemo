@@ -39,7 +39,12 @@ public class TodoItemBindable : BindableBase
     public DelegateCommand DeleteCommand => new(ToDoDelete);
 
     public Todo Todo { get; }
-    
+
+    public static int OrderComparison(TodoItemBindable x, TodoItemBindable y)
+    {
+        return Todo.OrderComparison(x.Todo, y.Todo);
+    }
+
     private void UpdateDb()
     {
         Todo.IsDone = IsDone;
