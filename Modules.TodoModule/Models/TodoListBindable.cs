@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Modules.DatabaseModule.Tables;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -8,11 +9,13 @@ namespace Modules.TodoModule.Models;
 public class TodoListBindable : BindableBase
 {
     private readonly IEventAggregator ea;
+    private readonly TodoList list;
     private string title;
 
-    public TodoListBindable(IEventAggregator ea)
+    public TodoListBindable(IEventAggregator ea, TodoList list)
     {
         this.ea = ea;
+        this.list = list;
         title = string.Empty;
         Items = new ObservableCollection<TodoItemBindable>();
     }

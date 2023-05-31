@@ -1,6 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using Common.Models;
 using JetBrains.Annotations;
@@ -20,24 +19,28 @@ public class DoListViewModel : BindableBase
     private readonly IEventAggregator ea;
     private LoginModel? loginUser;
 
-    public DoListViewModel(IEventAggregator ea, TodoContext context)
+    public DoListViewModel(
+        IEventAggregator ea,
+        TodoContext context)
     {
         this.ea = ea;
         this.context = context;
-        // ea.GetEvent<TodoEvents.TodoItemFinishedEvent>().Subscribe(OnTodoFinish);
-        // ea.GetEvent<TodoEvents.TodoItemUnFinishedEvent>().Subscribe(OnTodoUnFinish);
         ea.GetEvent<TodoEvents.TodoItemDeleteEvent>().Subscribe(OnToDoDelete);
-
         ea.GetEvent<Common.Events.LoginEvent>().Subscribe(OnUserLogin);
-
-        //dones.Items.CollectionChanged += ItemsOnCollectionChanged;
     }
 
     public ObservableCollection<TodoListBindable> TodoLists { get; } = new();
 
     public void CreateSection(string sectionName)
     {
-        var todoList = new TodoListBindable(ea);
+        var list = new TodoList();
+        list.Name = sectionName;
+        list.User = GetCurrentUser();
+        list.Order = TodoLists.Count;
+        context.Lists.Add(list);
+        context.SaveChanges();
+
+        var todoList = new TodoListBindable(ea, list);
         todoList.Title = sectionName;
         TodoLists.Add(todoList);
     }
@@ -59,9 +62,12 @@ public class DoListViewModel : BindableBase
     {
         loginUser = model;
         TodoLists.Clear();
-        foreach (TodoList list in context.Lists.Where(o => o.User.Username == loginUser.Username))
+
+        List<TodoList> currentUsersLists = GetCurrentUserLists();
+        User currentUser = GetCurrentUser();
+        foreach (TodoList list in currentUsersLists)
         {
-            var todoList = new TodoListBindable(ea)
+            var todoList = new TodoListBindable(ea, list)
             {
                 Title = list.Name
             };
@@ -80,43 +86,28 @@ public class DoListViewModel : BindableBase
         }
     }
 
-    private void ItemsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private List<TodoList> GetCurrentUserLists()
     {
-        switch (e.Action)
+        List<TodoList> todoLists = context
+                                   .Lists
+                                   .Where(o => o.User.Username == loginUser.Username)
+                                   .ToList();
+        todoLists.Sort(TodoListOrderComparison);
+        return todoLists;
+    }
+
+    private static int TodoListOrderComparison(TodoList x, TodoList y)
+    {
+        if (x.Order < y.Order)
         {
-            case NotifyCollectionChangedAction.Add:
-                if (e.NewItems == null)
-                {
-                    break;
-                }
-
-                foreach (TodoItemBindable item in e.NewItems)
-                {
-                    item.IsDone = true;
-                }
-
-                break;
-            case NotifyCollectionChangedAction.Remove:
-
-                if (e.OldItems == null)
-                {
-                    break;
-                }
-
-                foreach (TodoItemBindable item in e.OldItems)
-                {
-                    item.IsDone = false;
-                }
-
-                break;
-            case NotifyCollectionChangedAction.Replace:
-                break;
-            case NotifyCollectionChangedAction.Move:
-                break;
-            case NotifyCollectionChangedAction.Reset:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            return x.Order;
         }
+
+        return y.Order;
+    }
+
+    private User GetCurrentUser()
+    {
+        return context.Users.First(o => o.Username == loginUser.Username);
     }
 }
