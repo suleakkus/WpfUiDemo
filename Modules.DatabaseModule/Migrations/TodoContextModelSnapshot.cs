@@ -14,7 +14,7 @@ namespace Modules.DatabaseModule.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
+
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
             modelBuilder.Entity("Modules.DatabaseModule.Tables.Todo", b =>
@@ -133,7 +133,6 @@ namespace Modules.DatabaseModule.Migrations
                 {
                     b.Navigation("Todos");
                 });
-#pragma warning restore 612, 618
         }
     }
 }

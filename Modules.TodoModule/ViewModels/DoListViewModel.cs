@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -20,103 +20,98 @@ public class DoListViewModel : BindableBase
     private readonly IEventAggregator ea;
     private LoginModel? loginUser;
 
-    public DoListViewModel(IEventAggregator ea, TodoContext context)
+    public DoListViewModel(
+        IEventAggregator ea,
+        TodoContext context)
     {
         this.ea = ea;
         this.context = context;
-        // ea.GetEvent<TodoEvents.TodoItemFinishedEvent>().Subscribe(OnTodoFinish);
-        // ea.GetEvent<TodoEvents.TodoItemUnFinishedEvent>().Subscribe(OnTodoUnFinish);
         ea.GetEvent<TodoEvents.TodoItemDeleteEvent>().Subscribe(OnToDoDelete);
-
         ea.GetEvent<Common.Events.LoginEvent>().Subscribe(OnUserLogin);
+        TodoLists.CollectionChanged += TodoListsOnCollectionChanged;
+    }
 
-        //dones.Items.CollectionChanged += ItemsOnCollectionChanged;
+    private void TodoListsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action is NotifyCollectionChangedAction.Remove or NotifyCollectionChangedAction.Move)
+        {
+            for (var i = 0; i < TodoLists.Count; i++)
+            {
+                TodoListBindable item = TodoLists[i];
+                item.TodoList.Order = i;
+            }
+            context.SaveChanges();
+        }
     }
 
     public ObservableCollection<TodoListBindable> TodoLists { get; } = new();
 
     public void CreateSection(string sectionName)
     {
-        var todoList = new TodoListBindable(ea);
+        var list = new TodoList();
+        list.Name = sectionName;
+        list.User = GetCurrentUser();
+        list.Order = TodoLists.Count;
+        context.Lists.Add(list);
+        context.SaveChanges();
+
+        var todoList = new TodoListBindable(ea, list, context);
         todoList.Title = sectionName;
         TodoLists.Add(todoList);
     }
 
     private void OnToDoDelete(TodoItemBindable value)
     {
-        Todo todo = context.Todos.First(o => o.Equals(value.Entity));
-
-        context.Todos.Remove(todo);
         foreach (TodoListBindable list in TodoLists)
         {
             list.Items.Remove(value);
         }
-
-        context.SaveChanges();
     }
 
     private void OnUserLogin(LoginModel model)
     {
         loginUser = model;
         TodoLists.Clear();
-        foreach (TodoList list in context.Lists.Where(o => o.User.Username == loginUser.Username))
+
+        List<TodoList> currentUsersLists = GetCurrentUserLists();
+
+        foreach (TodoList list in currentUsersLists)
         {
-            var todoList = new TodoListBindable(ea)
-            {
-                Title = list.Name
-            };
+            var todos = new List<TodoItemBindable>();
 
             foreach (Todo todo in context.Todos.Where(o => o.TodoList.TodoListId == list.TodoListId))
             {
-                todoList.Items.Add(
-                    new TodoItemBindable(ea, todo)
-                    {
-                        Text = todo.Name,
-                        IsDone = todo.IsDone
-                    });
+                var bindable = new TodoItemBindable(ea, todo, context)
+                {
+                    Text = todo.Name,
+                    IsDone = todo.IsDone
+                };
+                todos.Add(bindable);
             }
+
+            var todoList = new TodoListBindable(ea, list, context, todos)
+            {
+                Title = list.Name
+            };
 
             TodoLists.Add(todoList);
         }
     }
 
-    private void ItemsOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    private List<TodoList> GetCurrentUserLists()
     {
-        switch (e.Action)
-        {
-            case NotifyCollectionChangedAction.Add:
-                if (e.NewItems == null)
-                {
-                    break;
-                }
+        List<TodoList> todoLists = context
+                                   .Lists
+                                   .Where(o => o.User.Username == loginUser.Username)
+                                   .ToList();
+        todoLists.Sort(TodoList.OrderComparison);
+        return todoLists;
+    }
 
-                foreach (TodoItemBindable item in e.NewItems)
-                {
-                    item.IsDone = true;
-                }
+    
 
-                break;
-            case NotifyCollectionChangedAction.Remove:
-
-                if (e.OldItems == null)
-                {
-                    break;
-                }
-
-                foreach (TodoItemBindable item in e.OldItems)
-                {
-                    item.IsDone = false;
-                }
-
-                break;
-            case NotifyCollectionChangedAction.Replace:
-                break;
-            case NotifyCollectionChangedAction.Move:
-                break;
-            case NotifyCollectionChangedAction.Reset:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+    private User GetCurrentUser()
+    {
+        return context.Users.First(o => o.Username == loginUser.Username);
     }
 }
