@@ -12,6 +12,7 @@
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance viewModels:DoListViewModel}">
+    <ScrollViewer CanContentScroll="True">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition
@@ -26,6 +27,7 @@
         <!--     Grid.Column="0"> -->
         <!-- ScrollViewer.HorizontalScrollBarVisibility="Visible" -->
         <!-- ScrollViewer.VerticalScrollBarVisibility="Visible" -->
+        
         <ItemsControl
             dd:DragDrop.IsDragSource="True"
             dd:DragDrop.IsDropTarget="True"
@@ -126,6 +128,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        
         <TextBox
             Grid.Column="1"
             Width="120"
@@ -140,4 +143,5 @@
         <!-- </ScrollViewer> -->
         
     </Grid>
+    </ScrollViewer>
 </UserControl>
