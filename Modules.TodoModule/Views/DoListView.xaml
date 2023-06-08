@@ -12,7 +12,7 @@
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance viewModels:DoListViewModel}">
-    <ScrollViewer CanContentScroll="True">
+    <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition

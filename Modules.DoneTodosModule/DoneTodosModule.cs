@@ -1,15 +1,15 @@
 ﻿using Common;
 using MahApps.Metro.IconPacks;
-using Modules.TodoModule.Views;
+using Modules.DoneTodosModule.Views;
 using Prism.Ioc;
 using Prism.Regions;
 
-namespace Modules.TodoModule;
+namespace Modules.DoneTodosModule;
 
-public class TodoModule : BaseModule
+public class DoneTodosModule : BaseModule
 {
 
-    public TodoModule(
+    public DoneTodosModule(
         IRegionManager regionManager,
         IMenuController menuController)
         : base(
@@ -19,16 +19,15 @@ public class TodoModule : BaseModule
 
     public override void RegisterTypes(IContainerRegistry containerRegistry)
     {
-        PackIconControlBase icon = new PackIconMaterial
+        PackIconControlBase icon2 = new PackIconMaterial
         {
-            Kind = PackIconMaterialKind.Menu
+            Kind = PackIconMaterialKind.AccountArrowLeft
         };
-        MenuController.Add("Yapılacaklar", RegionName, icon);
-
+        MenuController.Add("Tamamlanmış Görevler", RegionName, icon2);
     }
 
     public override void OnInitialized(IContainerProvider containerProvider)
     {
-        RegionManager.RegisterViewWithRegion(RegionName, typeof(DoListView));
+        RegionManager.RegisterViewWithRegion(RegionName, typeof(DoneTodosView));
     }
 }

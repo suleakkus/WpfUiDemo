@@ -3,6 +3,7 @@ using Common;
 using MahappsPrism.Desktop.Controllers;
 using MahappsPrism.Desktop.Views;
 using Modules.DatabaseModule;
+using Modules.DoneTodosModule;
 using Modules.LoginModule;
 using Modules.TodoModule;
 using Prism.Ioc;
@@ -26,6 +27,7 @@ public partial class App
     {
         moduleCatalog.AddModule<TodoModule>();
         moduleCatalog.AddModule<LoginModule>();
+        moduleCatalog.AddModule<DoneTodosModule>();
     }
 
     protected override Window CreateShell()
