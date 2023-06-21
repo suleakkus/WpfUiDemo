@@ -158,7 +158,6 @@
                 <ContentControl
                     regions:RegionManager.RegionName="{x:Static loginModule:LoginModule.SignupRegionName}" />
             </mah:Flyout>
-
         </mah:FlyoutsControl>
     </mah:MetroWindow.Flyouts>
 </mah:MetroWindow>
