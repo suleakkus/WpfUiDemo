@@ -17,6 +17,33 @@
     Width="400"
     x:Name="Window">
 
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands>
+            <ComboBox
+                Text="Tema Seç"
+                ToolTip="Tema Seç"
+                mah:ComboBoxHelper.CharacterCasing="Normal"
+                SelectedItem="{Binding Path=SelectedTheme}"
+                ItemsSource="{Binding Path=Themes}">
+                <ComboBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel
+                            Width="140" />
+                    </ItemsPanelTemplate>
+                </ComboBox.ItemsPanel>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Height="20"
+                            CornerRadius="20"
+                            Background="{Binding Path=ShowcaseBrush}"
+                            Width="20" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
             <StackPanel
@@ -131,7 +158,6 @@
                 <ContentControl
                     regions:RegionManager.RegionName="{x:Static loginModule:LoginModule.SignupRegionName}" />
             </mah:Flyout>
-
         </mah:FlyoutsControl>
     </mah:MetroWindow.Flyouts>
 </mah:MetroWindow>

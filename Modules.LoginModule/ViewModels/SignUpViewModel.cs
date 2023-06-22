@@ -57,6 +57,13 @@ public class SignUpViewModel : BindableBase
     }
 
     public DelegateCommand SignUpCommand => new(OnSignUp);
+    
+    public DelegateCommand BackCommand => new(OnBack);
+
+    private void OnBack()
+    {
+        ea.GetEvent<Events.NavigateToLoginEvent>().Publish(new LoginModel());
+    }
 
     private void OnSignUp()
     {

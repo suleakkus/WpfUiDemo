@@ -12,136 +12,141 @@
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance viewModels:DoListViewModel}">
-    <ScrollViewer CanContentScroll="True" HorizontalScrollBarVisibility="Auto">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition
-                Width="*" />
-            <ColumnDefinition
-                Width="Auto" />
-        </Grid.ColumnDefinitions>
-        <!-- <ScrollViewer -->
-        <!--     CanContentScroll="True" -->
-        <!--     HorizontalScrollBarVisibility="Visible" -->
-        <!--     VerticalScrollBarVisibility="Visible" -->
-        <!--     Grid.Column="0"> -->
-        <!-- ScrollViewer.HorizontalScrollBarVisibility="Visible" -->
-        <!-- ScrollViewer.VerticalScrollBarVisibility="Visible" -->
-        
-        <ItemsControl
-            dd:DragDrop.IsDragSource="True"
-            dd:DragDrop.IsDropTarget="True"
-            ItemsSource="{Binding Path=TodoLists}">
-            <!-- https://stackoverflow.com/a/2028583/3767991 -->
-            <!-- <ItemsControl.Template> -->
-            <!--     <ControlTemplate> -->
-            <!--         <ScrollViewer> -->
-            <!--             <ItemsPresenter /> -->
-            <!--         </ScrollViewer> -->
-            <!--     </ControlTemplate> -->
-            <!-- </ItemsControl.Template> -->
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel
-                        Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <GroupBox
-                        Width="320"
-                        mah:HeaderedControlHelper.HeaderFontSize="18"
-                        mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
-                        mah:HeaderedControlHelper.HeaderFontFamily="Segoe UI"
-                        BorderThickness="0"
-                        Margin="4"
-                        Header="{Binding Path=Title}">
+    <ScrollViewer
+        x:Name="ScrollViewer"
+        CanContentScroll="True"
+        HorizontalScrollBarVisibility="Disabled">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="*" />
+                <ColumnDefinition
+                    Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ItemsControl
+                dd:DragDrop.IsDragSource="True"
+                dd:DragDrop.IsDropTarget="True"
+                ItemsSource="{Binding Path=TodoLists}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
                         <StackPanel
-                            Orientation="Vertical">
-                            <ItemsControl
-                                dd:DragDrop.IsDragSource="True"
-                                dd:DragDrop.IsDropTarget="True"
-                                ItemsSource="{Binding Path=Items}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border
-                                            CornerRadius="10"
-                                            Background="#2F2F2F"
-                                            BorderThickness="0"
-                                            Margin="4"
-                                            Padding="10">
-                                            <Grid
-                                                ToolTip="{Binding Path=Todo.CreatedAt}">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition
-                                                        Height="Auto" />
-                                                    <RowDefinition
-                                                        Height="Auto" />
-                                                    <RowDefinition
-                                                        Height="Auto" />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition
-                                                        Width="Auto" />
-                                                    <ColumnDefinition
-                                                        Width="*" />
-                                                    <ColumnDefinition
-                                                        Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <CheckBox
-                                                    Grid.Column="0"
-                                                    Grid.Row="0"
-                                                    IsChecked="{Binding Path=IsDone, Mode=OneWay}"
-                                                    Command="{Binding Path=FinishCommand}"
-                                                    Margin="2" />
-                                                <TextBox
-                                                    mah:ControlsHelper.CornerRadius="8"
-                                                    TextWrapping="Wrap"
-                                                    Padding="8"
-                                                    Grid.Column="1"
-                                                    Grid.Row="0"
-                                                    Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}" />
-                                                <Button
-                                                    Grid.Column="2"
-                                                    Grid.Row="2"
-                                                    HorizontalAlignment="Right"
-                                                    ToolTip="Sil"
-                                                    Margin="5 "
-                                                    Padding="5"
-                                                    Command="{Binding Path=DeleteCommand}">
-                                                    <iconPacks:PackIconMaterial
-                                                        Kind="TrashCanOutline" />
-                                                </Button>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <Button
-                                Content="ToDo Oluştur"
-                                Margin="16 4"
-                                mah:ControlsHelper.CornerRadius="8"
-                                Command="{Binding Path=AddItemCommand}"
-                                Padding="8" />
-                        </StackPanel>
-                    </GroupBox>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        
-        <TextBox
-            Grid.Column="1"
-            Width="120"
-            Margin="4"
-            Padding="4"
-            VerticalAlignment="Top"
-            KeyDown="TextBoxBaseOnTextChanged"
-            mah:TextBoxHelper.ClearTextButton="True"
-            mah:TextBoxHelper.UseFloatingWatermark="True"
-            mah:TextBoxHelper.Watermark="Yeni Bölüm Ekle:" />
-        <!-- </StackPanel> -->
-        <!-- </ScrollViewer> -->
-        
-    </Grid>
+                            Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <GroupBox
+                            Width="320"
+                            mah:HeaderedControlHelper.HeaderFontSize="18"
+                            mah:HeaderedControlHelper.HeaderHorizontalContentAlignment="Center"
+                            mah:HeaderedControlHelper.HeaderFontFamily="Segoe UI"
+                            BorderThickness="0"
+                            Margin="4"
+                            Header="{Binding Path=Title}">
+                            <StackPanel
+                                Orientation="Vertical">
+                                <ItemsControl
+                                    dd:DragDrop.IsDragSource="True"
+                                    dd:DragDrop.IsDropTarget="True"
+                                    ItemsSource="{Binding Path=Items}">
+                                    <ItemsControl.ItemTemplate>
+                                        <!-- To-Do elemanlari -->
+                                        <DataTemplate>
+                                            <Border
+                                                x:Name="Border"
+                                                CornerRadius="10"
+                                                BorderThickness="0"
+                                                Margin="4"
+                                                Background="{Binding Path=Background}"
+                                                Padding="10">
+
+                                                <Grid
+                                                    ToolTip="{Binding Path=Todo.CreatedAt}">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition
+                                                            Width="Auto" />
+                                                        <ColumnDefinition
+                                                            Width="*" />
+                                                        <ColumnDefinition
+                                                            Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox
+                                                        x:Name="DoneCheckBox"
+                                                        Grid.Column="0"
+                                                        Grid.Row="0"
+                                                        IsChecked="{Binding Path=IsDone, Mode=OneWay}"
+                                                        Command="{Binding Path=FinishCommand}"
+                                                        Margin="2" />
+                                                    <TextBox
+                                                        mah:ControlsHelper.CornerRadius="8"
+                                                        TextWrapping="Wrap"
+                                                        Padding="8"
+                                                        Grid.Column="1"
+                                                        Grid.Row="0"
+                                                        Text="{Binding Path=Text, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                    <mah:DateTimePicker
+                                                        mah:ControlsHelper.CornerRadius="8"
+                                                        mah:TextBoxHelper.Watermark="Bitiş Tarihi:"
+                                                        Padding="8"
+                                                        Margin="0 4"
+                                                        SelectedDateTime="{Binding Path=DueDate, UpdateSourceTrigger=PropertyChanged}"
+                                                        SelectedDateFormat="Long"
+                                                        HorizontalAlignment="Right"
+                                                        Grid.Row="2"
+                                                        Grid.Column="1" />
+
+                                                    <Button
+                                                        Grid.Column="2"
+                                                        Grid.Row="2"
+                                                        HorizontalAlignment="Right"
+                                                        ToolTip="Sil"
+                                                        Margin="5 "
+                                                        Padding="5"
+                                                        Command="{Binding Path=DeleteCommand}">
+                                                        <iconPacks:PackIconMaterial
+                                                            Kind="TrashCanOutline" />
+                                                    </Button>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                        <!---->
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Button
+                                    Content="ToDo Oluştur"
+                                    Margin="16 4"
+                                    mah:ControlsHelper.CornerRadius="8"
+                                    Command="{Binding Path=AddItemCommand}"
+                                    Padding="8" />
+                            </StackPanel>
+                        </GroupBox>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBox
+                Grid.Column="1"
+                Width="120"
+                Margin="4"
+                Padding="4"
+                VerticalAlignment="Top"
+                KeyDown="TextBoxBaseOnTextChanged"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.UseFloatingWatermark="True"
+                mah:TextBoxHelper.Watermark="Yeni Bölüm Ekle:" />
+            <!-- </StackPanel> -->
+            <!-- </ScrollViewer> -->
+
+        </Grid>
     </ScrollViewer>
 </UserControl>
